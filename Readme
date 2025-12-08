@@ -1,0 +1,31 @@
+This project is a RESTful API for managing products in a portfolio. It provides endpoints for CRUD operations on products.
+
+Features
+Get all products
+Get a product by ID
+Add a new product
+Update an existing product
+Delete a product
+
+Technologies Used
+ASP.NET Core
+C#
+.NET 9.0
+OpenAPI (Swagger)
+
+Getting Started
+To get started with the Portfolio API, follow these steps:
+Clone the repository: git clone https://github.com/your-username/portfolio-api.git
+Restore the NuGet packages: dotnet restore
+Build the project: dotnet build
+Run the API: dotnet run
+
+Endpoints
+GET /products: Returns a list of all products.
+GET /products/{id}: Returns a specific product by ID.
+POST /products: Adds a new product.
+PUT /products/{id}: Updates an existing product.
+DELETE /products/{id}: Deletes a product.
+
+Testing
+The project includes a test file test.rest that provides examples of API requests and responses. You can use tools like Postman or cURL to test the API endpoints.
