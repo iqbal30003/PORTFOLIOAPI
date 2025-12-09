@@ -4,34 +4,51 @@ Accept: application/json
 
 ###
 
-### Get product by ID
+### Search products
+GET http://localhost:5103/api/product?search=lap
+Accept: application/json
+
+###
+
+### Sort by price
+GET http://localhost:5103/api/product?sortBy=price
+Accept: application/json
+
+###
+
+### Pagination
+GET http://localhost:5103/api/product?skip=0&take=5
+Accept: application/json
+
+###
+
+### Get by ID
 GET http://localhost:5103/api/product/1
 Accept: application/json
 
 ###
 
-### Add a new product
+### Create
 POST http://localhost:5103/api/product
 Content-Type: application/json
 
 {
-    "name": "Tablet",
-    "price": 450
+  "name": "Tablet",
+  "price": 450
 }
 
 ###
 
-### Update a product
+### Update
 PUT http://localhost:5103/api/product/1
 Content-Type: application/json
 
 {
-    "id": 1,
-    "name": "Laptop Pro",
-    "price": 1500
+  "name": "Laptop Pro",
+  "price": 1500
 }
 
 ###
 
-### Delete a product
+### Delete
 DELETE http://localhost:5103/api/product/2
