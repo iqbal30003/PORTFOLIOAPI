@@ -1,3 +1,5 @@
+using System;
+
 namespace PortfolioAPI.Models
 {
     public class Product
@@ -7,6 +9,8 @@ namespace PortfolioAPI.Models
         public string Name { get; set; } = string.Empty;
 
         public decimal Price { get; set; }
+
+        public string Category { get; set; } = "General";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

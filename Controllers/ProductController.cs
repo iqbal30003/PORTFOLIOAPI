@@ -11,14 +11,15 @@ namespace PortfolioAPI.Controllers
     {
         private static List<Product> products = new()
         {
-            new Product { Id = 1, Name = "Laptop", Price = 1200 },
-            new Product { Id = 2, Name = "Phone", Price = 800 }
+            new Product { Id = 1, Name = "Laptop", Price = 1200, Category = "Electronics" },
+            new Product { Id = 2, Name = "Phone", Price = 800, Category = "Electronics" }
         };
 
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get(
             string? search = null,
             string? sortBy = null,
+            string? category = null,
             int skip = 0,
             int take = 50)
         {
@@ -26,6 +27,9 @@ namespace PortfolioAPI.Controllers
 
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(category))
+                query = query.Where(p => p.Category.ToLower() == category.ToLower());
 
             query = sortBy switch
             {
@@ -56,6 +60,9 @@ namespace PortfolioAPI.Controllers
             if (product.Price <= 0)
                 return BadRequest(new { message = "Price must be greater than zero" });
 
+            if (string.IsNullOrWhiteSpace(product.Category))
+                product.Category = "General";
+
             product.Id = products.Any() ? products.Max(p => p.Id) + 1 : 1;
             product.CreatedAt = DateTime.UtcNow;
 
@@ -77,8 +84,12 @@ namespace PortfolioAPI.Controllers
             if (updated.Price <= 0)
                 return BadRequest(new { message = "Price must be greater than zero" });
 
+            if (string.IsNullOrWhiteSpace(updated.Category))
+                updated.Category = "General";
+
             product.Name = updated.Name;
             product.Price = updated.Price;
+            product.Category = updated.Category;
             product.UpdatedAt = DateTime.UtcNow;
 
             return NoContent();
