@@ -10,6 +10,12 @@ Accept: application/json
 
 ###
 
+### Filter by category
+GET http://localhost:5103/api/product?category=Electronics
+Accept: application/json
+
+###
+
 ### Sort by price
 GET http://localhost:5103/api/product?sortBy=price
 Accept: application/json
@@ -28,27 +34,30 @@ Accept: application/json
 
 ###
 
-### Create
+### Create product
 POST http://localhost:5103/api/product
 Content-Type: application/json
 
 {
   "name": "Tablet",
-  "price": 450
+  "price": 450,
+  "category": "Electronics"
 }
 
 ###
 
-### Update
+### Update product
 PUT http://localhost:5103/api/product/1
 Content-Type: application/json
 
 {
   "name": "Laptop Pro",
-  "price": 1500
+  "price": 1500,
+  "category": "Electronics"
 }
 
 ###
 
-### Delete
+### Delete product
 DELETE http://localhost:5103/api/product/2
+Accept: application/json

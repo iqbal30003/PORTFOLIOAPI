@@ -15,7 +15,7 @@ OpenAPI (Swagger)
 
 Getting Started
 To get started with the Portfolio API, follow these steps:
-Clone the repository: git clone https://github.com/your-username/portfolio-api.git
+Clone the repository: git clone https://github.com/iqbal30003/PORTFOLIOAPI.git
 Restore the NuGet packages: dotnet restore
 Build the project: dotnet build
 Run the API: dotnet run
