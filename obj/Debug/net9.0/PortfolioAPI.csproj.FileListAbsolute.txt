@@ -8,6 +8,9 @@ D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\PortfolioAPI.d
 D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\PortfolioAPI.pdb
 D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\Microsoft.OpenApi.dll
+D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\portfolio\portfolio website\.net\PortfolioAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.csproj.AssemblyReference.cache
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.GeneratedMSBuildEditorConfig.editorconfig
@@ -16,6 +19,7 @@ D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.A
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.csproj.CoreCompileInputs.cache
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.MvcApplicationPartsAssemblyInfo.cs
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.sourcelink.json
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -30,4 +34,3 @@ D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\refint\Portfol
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.pdb
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.genruntimeconfig.cache
 D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\ref\PortfolioAPI.dll
-D:\portfolio\portfolio website\.net\PortfolioAPI\obj\Debug\net9.0\PortfolioAPI.sourcelink.json
