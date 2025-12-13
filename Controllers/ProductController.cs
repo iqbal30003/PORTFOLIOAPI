@@ -12,24 +12,35 @@ namespace PortfolioAPI.Controllers
         private static List<Product> products = new()
         {
             new Product { Id = 1, Name = "Laptop", Price = 1200, Category = "Electronics" },
-            new Product { Id = 2, Name = "Phone", Price = 800, Category = "Electronics" }
+            new Product { Id = 2, Name = "Phone", Price = 800, Category = "Electronics" },
+            new Product { Id = 3, Name = "Headphones", Price = 150, Category = "Audio" }
         };
 
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get(
+        public ActionResult Get(
             string? search = null,
             string? sortBy = null,
             string? category = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
             int skip = 0,
             int take = 50)
         {
-            var query = products.AsQueryable();
+            var query = products
+                .Where(p => !p.IsDeleted)
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(category))
                 query = query.Where(p => p.Category.ToLower() == category.ToLower());
+
+            if (minPrice.HasValue)
+                query = query.Where(p => p.Price >= minPrice.Value);
+
+            if (maxPrice.HasValue)
+                query = query.Where(p => p.Price <= maxPrice.Value);
 
             query = sortBy switch
             {
@@ -38,13 +49,26 @@ namespace PortfolioAPI.Controllers
                 _ => query
             };
 
-            return Ok(query.Skip(skip).Take(take).ToList());
+            var totalCount = query.Count();
+
+            var data = query
+                .Skip(skip)
+                .Take(take)
+                .ToList();
+
+            return Ok(new
+            {
+                totalCount,
+                skip,
+                take,
+                data
+            });
         }
 
         [HttpGet("{id}")]
         public ActionResult<Product> GetById(int id)
         {
-            var product = products.FirstOrDefault(p => p.Id == id);
+            var product = products.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
             if (product == null)
                 return NotFound(new { message = "Product not found" });
 
@@ -52,7 +76,7 @@ namespace PortfolioAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Product> Create([FromBody] Product product)
+        public ActionResult<Product> Create(Product product)
         {
             if (string.IsNullOrWhiteSpace(product.Name))
                 return BadRequest(new { message = "Name is required" });
@@ -72,9 +96,9 @@ namespace PortfolioAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(int id, [FromBody] Product updated)
+        public ActionResult Update(int id, Product updated)
         {
-            var product = products.FirstOrDefault(p => p.Id == id);
+            var product = products.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
             if (product == null)
                 return NotFound(new { message = "Product not found" });
 
@@ -84,12 +108,12 @@ namespace PortfolioAPI.Controllers
             if (updated.Price <= 0)
                 return BadRequest(new { message = "Price must be greater than zero" });
 
-            if (string.IsNullOrWhiteSpace(updated.Category))
-                updated.Category = "General";
-
             product.Name = updated.Name;
             product.Price = updated.Price;
-            product.Category = updated.Category;
+            product.Category = string.IsNullOrWhiteSpace(updated.Category)
+                ? product.Category
+                : updated.Category;
+
             product.UpdatedAt = DateTime.UtcNow;
 
             return NoContent();
@@ -98,11 +122,13 @@ namespace PortfolioAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var product = products.FirstOrDefault(p => p.Id == id);
+            var product = products.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
             if (product == null)
                 return NotFound(new { message = "Product not found" });
 
-            products.Remove(product);
+            product.IsDeleted = true;
+            product.UpdatedAt = DateTime.UtcNow;
+
             return NoContent();
         }
     }

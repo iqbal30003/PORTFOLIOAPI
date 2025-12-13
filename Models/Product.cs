@@ -12,6 +12,8 @@ namespace PortfolioAPI.Models
 
         public string Category { get; set; } = "General";
 
+        public bool IsDeleted { get; set; } = false;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }

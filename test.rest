@@ -1,10 +1,10 @@
-### Get all products
+### Get all products (with pagination metadata)
 GET http://localhost:5103/api/product
 Accept: application/json
 
 ###
 
-### Search products
+### Search products by name
 GET http://localhost:5103/api/product?search=lap
 Accept: application/json
 
@@ -16,19 +16,25 @@ Accept: application/json
 
 ###
 
+### Filter by price range
+GET http://localhost:5103/api/product?minPrice=100&maxPrice=1000
+Accept: application/json
+
+###
+
 ### Sort by price
 GET http://localhost:5103/api/product?sortBy=price
 Accept: application/json
 
 ###
 
-### Pagination
-GET http://localhost:5103/api/product?skip=0&take=5
+### Pagination (skip/take)
+GET http://localhost:5103/api/product?skip=0&take=2
 Accept: application/json
 
 ###
 
-### Get by ID
+### Get product by ID
 GET http://localhost:5103/api/product/1
 Accept: application/json
 
@@ -39,9 +45,9 @@ POST http://localhost:5103/api/product
 Content-Type: application/json
 
 {
-  "name": "Tablet",
-  "price": 450,
-  "category": "Electronics"
+  "name": "Smart Watch",
+  "price": 250,
+  "category": "Wearables"
 }
 
 ###
@@ -51,13 +57,19 @@ PUT http://localhost:5103/api/product/1
 Content-Type: application/json
 
 {
-  "name": "Laptop Pro",
-  "price": 1500,
+  "name": "Laptop Pro Max",
+  "price": 1800,
   "category": "Electronics"
 }
 
 ###
 
-### Delete product
+### Soft delete product
 DELETE http://localhost:5103/api/product/2
+Accept: application/json
+
+###
+
+### Verify deleted product is not returned
+GET http://localhost:5103/api/product/2
 Accept: application/json
