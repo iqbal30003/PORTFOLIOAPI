@@ -1,20 +1,25 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add controllers
+// Controllers
 builder.Services.AddControllers();
 
-// Add Swagger services
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Health Checks
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
-// Enable Swagger in Development or always (your choice)
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseAuthorization();
+// Map Health Check endpoint
+app.MapHealthChecks("/health");
 
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
