@@ -78,3 +78,7 @@ Accept: application/json
 ### Verify deleted product is not returned
 GET http://localhost:5103/api/product/2
 Accept: application/json
+
+### Trigger unhandled exception (invalid route / edge case)
+GET http://localhost:5103/api/product/999999999999
+Accept: application/json
