@@ -10,7 +10,7 @@ namespace PortfolioAPI.Models
 
         public decimal Price { get; set; }
 
-        public string Category { get; set; } = "General";
+        public ProductCategory Category { get; set; } = ProductCategory.General;
 
         public bool IsDeleted { get; set; } = false;
 

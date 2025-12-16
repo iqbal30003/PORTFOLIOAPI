@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PortfolioAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,9 @@ namespace PortfolioAPI.Controllers
     {
         private static List<Product> products = new()
         {
-            new Product { Id = 1, Name = "Laptop", Price = 1200, Category = "Electronics" },
-            new Product { Id = 2, Name = "Phone", Price = 800, Category = "Electronics" },
-            new Product { Id = 3, Name = "Headphones", Price = 150, Category = "Audio" }
+            new Product { Id = 1, Name = "Laptop", Price = 1200, Category = ProductCategory.Electronics },
+            new Product { Id = 2, Name = "Phone", Price = 800, Category = ProductCategory.Electronics },
+            new Product { Id = 3, Name = "Headphones", Price = 150, Category = ProductCategory.Audio }
         };
 
         [HttpGet]
@@ -31,10 +32,14 @@ namespace PortfolioAPI.Controllers
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+                query = query.Where(p =>
+                    p.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
 
-            if (!string.IsNullOrWhiteSpace(category))
-                query = query.Where(p => p.Category.ToLower() == category.ToLower());
+            if (!string.IsNullOrWhiteSpace(category)
+                && Enum.TryParse<ProductCategory>(category, true, out var parsedCategory))
+            {
+                query = query.Where(p => p.Category == parsedCategory);
+            }
 
             if (minPrice.HasValue)
                 query = query.Where(p => p.Price >= minPrice.Value);
@@ -84,9 +89,6 @@ namespace PortfolioAPI.Controllers
             if (product.Price <= 0)
                 return BadRequest(new { message = "Price must be greater than zero" });
 
-            if (string.IsNullOrWhiteSpace(product.Category))
-                product.Category = "General";
-
             product.Id = products.Any() ? products.Max(p => p.Id) + 1 : 1;
             product.CreatedAt = DateTime.UtcNow;
 
@@ -110,10 +112,7 @@ namespace PortfolioAPI.Controllers
 
             product.Name = updated.Name;
             product.Price = updated.Price;
-            product.Category = string.IsNullOrWhiteSpace(updated.Category)
-                ? product.Category
-                : updated.Category;
-
+            product.Category = updated.Category;
             product.UpdatedAt = DateTime.UtcNow;
 
             return NoContent();
