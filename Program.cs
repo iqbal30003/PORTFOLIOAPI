@@ -1,16 +1,39 @@
 using PortfolioAPI.Middleware;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // ✅ Fix enum binding (string + case-insensitive)
+        options.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter()
+        );
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// Global exception handling (must be early in pipeline)
+// Must be early
 app.UseMiddleware<GlobalExceptionMiddleware>();
+
+app.UseCors("FrontendPolicy");
 
 app.UseSwagger();
 app.UseSwaggerUI();

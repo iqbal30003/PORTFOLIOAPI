@@ -15,6 +15,13 @@ Accept: application/json
 
 ###
 
+### Get available product categories
+GET http://localhost:5103/api/product/categories
+Accept: application/json
+
+###
+
+
 ### Filter by category
 GET http://localhost:5103/api/product?category=Electronics
 Accept: application/json
@@ -50,9 +57,9 @@ POST http://localhost:5103/api/product
 Content-Type: application/json
 
 {
-  "name": "Smart Watch",
+  "name": "headphones beatsr",
   "price": 250,
-  "category": "Wearables"
+  "category": "audio"
 }
 
 ###

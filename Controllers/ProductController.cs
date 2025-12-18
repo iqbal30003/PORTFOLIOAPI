@@ -17,6 +17,13 @@ namespace PortfolioAPI.Controllers
             new Product { Id = 3, Name = "Headphones", Price = 150, Category = ProductCategory.Audio }
         };
 
+        // 🔹 NEW: Get all available categories
+        [HttpGet("categories")]
+        public ActionResult<IEnumerable<string>> GetCategories()
+        {
+            return Ok(Enum.GetNames(typeof(ProductCategory)));
+        }
+
         [HttpGet]
         public ActionResult Get(
             string? search = null,
