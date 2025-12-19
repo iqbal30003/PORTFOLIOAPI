@@ -17,18 +17,11 @@ namespace PortfolioAPI.Controllers
             new Product { Id = 3, Name = "Headphones", Price = 150, Category = ProductCategory.Audio }
         };
 
-        // 🔹 NEW: Get all available categories
-        [HttpGet("categories")]
-        public ActionResult<IEnumerable<string>> GetCategories()
-        {
-            return Ok(Enum.GetNames(typeof(ProductCategory)));
-        }
-
         [HttpGet]
         public ActionResult Get(
             string? search = null,
             string? sortBy = null,
-            string? category = null,
+            ProductCategory? category = null,
             decimal? minPrice = null,
             decimal? maxPrice = null,
             int skip = 0,
@@ -39,14 +32,10 @@ namespace PortfolioAPI.Controllers
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(p =>
-                    p.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
 
-            if (!string.IsNullOrWhiteSpace(category)
-                && Enum.TryParse<ProductCategory>(category, true, out var parsedCategory))
-            {
-                query = query.Where(p => p.Category == parsedCategory);
-            }
+            if (category.HasValue)
+                query = query.Where(p => p.Category == category.Value);
 
             if (minPrice.HasValue)
                 query = query.Where(p => p.Price >= minPrice.Value);
@@ -136,6 +125,25 @@ namespace PortfolioAPI.Controllers
             product.UpdatedAt = DateTime.UtcNow;
 
             return NoContent();
+        }
+
+        // ✅ NEW FEATURE: Product statistics
+        [HttpGet("stats")]
+        public ActionResult GetStats()
+        {
+            var activeProducts = products.Where(p => !p.IsDeleted).ToList();
+
+            return Ok(new
+            {
+                totalProducts = products.Count,
+                activeProducts = activeProducts.Count,
+                deletedProducts = products.Count(p => p.IsDeleted),
+                minPrice = activeProducts.Any() ? activeProducts.Min(p => p.Price) : 0,
+                maxPrice = activeProducts.Any() ? activeProducts.Max(p => p.Price) : 0,
+                averagePrice = activeProducts.Any()
+                    ? Math.Round(activeProducts.Average(p => p.Price), 2)
+                    : 0
+            });
         }
     }
 }
