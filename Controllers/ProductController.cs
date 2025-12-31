@@ -57,6 +57,11 @@ namespace PortfolioAPI.Controllers
                 .Take(take)
                 .ToList();
 
+            // ✅ FIXED: safe header assignment (no ASP0019 warning)
+            Response.Headers["X-Total-Count"] = totalCount.ToString();
+            Response.Headers["X-Skip"] = skip.ToString();
+            Response.Headers["X-Take"] = take.ToString();
+
             return Ok(new
             {
                 totalCount,
@@ -127,7 +132,6 @@ namespace PortfolioAPI.Controllers
             return NoContent();
         }
 
-        // ✅ NEW FEATURE: Product statistics
         [HttpGet("stats")]
         public ActionResult GetStats()
         {
