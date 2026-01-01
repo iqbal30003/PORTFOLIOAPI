@@ -18,7 +18,6 @@ builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
     {
-        // ✅ Fix enum binding (string + case-insensitive)
         options.JsonSerializerOptions.Converters.Add(
             new JsonStringEnumConverter()
         );
@@ -30,7 +29,10 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// Must be early
+// 🔹 Request correlation ID (should be very early)
+app.UseMiddleware<RequestCorrelationMiddleware>();
+
+// 🔹 Global exception handling
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseCors("FrontendPolicy");
