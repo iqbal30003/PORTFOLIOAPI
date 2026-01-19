@@ -89,3 +89,22 @@ Accept: application/json
 ### Trigger unhandled exception (invalid route / edge case)
 GET http://localhost:5103/api/product/999999999999
 Accept: application/json
+### HEAD product list (pagination metadata only)
+HEAD http://localhost:5103/api/product
+
+###
+
+### HEAD with filters
+HEAD http://localhost:5103/api/product?category=Electronics&minPrice=100
+
+###
+
+### GET all products
+GET http://localhost:5103/api/product
+Accept: application/json
+
+###
+
+### GET product stats
+GET http://localhost:5103/api/product/stats
+Accept: application/json

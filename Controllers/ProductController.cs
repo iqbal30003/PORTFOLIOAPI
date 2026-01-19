@@ -18,6 +18,7 @@ namespace PortfolioAPI.Controllers
         };
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult Get(
             string? search = null,
             string? sortBy = null,
@@ -57,7 +58,6 @@ namespace PortfolioAPI.Controllers
                 .Take(take)
                 .ToList();
 
-            // ✅ FIXED: safe header assignment (no ASP0019 warning)
             Response.Headers["X-Total-Count"] = totalCount.ToString();
             Response.Headers["X-Skip"] = skip.ToString();
             Response.Headers["X-Take"] = take.ToString();
@@ -69,6 +69,42 @@ namespace PortfolioAPI.Controllers
                 take,
                 data
             });
+        }
+
+        // ✅ NEW FEATURE: HEAD endpoint for pagination metadata
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Head(
+            string? search = null,
+            ProductCategory? category = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            int skip = 0,
+            int take = 50)
+        {
+            var query = products
+                .Where(p => !p.IsDeleted)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+
+            if (category.HasValue)
+                query = query.Where(p => p.Category == category.Value);
+
+            if (minPrice.HasValue)
+                query = query.Where(p => p.Price >= minPrice.Value);
+
+            if (maxPrice.HasValue)
+                query = query.Where(p => p.Price <= maxPrice.Value);
+
+            var totalCount = query.Count();
+
+            Response.Headers["X-Total-Count"] = totalCount.ToString();
+            Response.Headers["X-Skip"] = skip.ToString();
+            Response.Headers["X-Take"] = take.ToString();
+
+            return Ok();
         }
 
         [HttpGet("{id}")]
