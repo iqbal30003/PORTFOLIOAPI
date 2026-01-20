@@ -1,31 +1,177 @@
-This project is a RESTful API for managing products in a portfolio. It provides endpoints for CRUD operations on products.
+# PortfolioAPI
 
-Features
-Get all products
-Get a product by ID
-Add a new product
-Update an existing product
-Delete a product
+A clean, production-style **ASP.NET Core Web API** built as a portfolio project to demonstrate real-world backend design patterns, HTTP semantics, and API best practices.
 
-Technologies Used
-ASP.NET Core
-C#
-.NET 9.0
-OpenAPI (Swagger)
+This API manages products with filtering, pagination, soft deletion, analytics, and operational endpoints commonly found in professional systems.
 
-Getting Started
-To get started with the Portfolio API, follow these steps:
-Clone the repository: git clone https://github.com/iqbal30003/PORTFOLIOAPI.git
-Restore the NuGet packages: dotnet restore
-Build the project: dotnet build
-Run the API: dotnet run
+---
 
-Endpoints
-GET /products: Returns a list of all products.
-GET /products/{id}: Returns a specific product by ID.
-POST /products: Adds a new product.
-PUT /products/{id}: Updates an existing product.
-DELETE /products/{id}: Deletes a product.
+## 🚀 Features
 
-Testing
-The project includes a test file test.rest that provides examples of API requests and responses. You can use tools like Postman or cURL to test the API endpoints.
+### Core CRUD
+
+* Create, read, update, and soft-delete products
+* In-memory data store (intentionally simple for clarity)
+
+### Filtering & Querying
+
+* Search by name
+* Filter by category
+* Filter by price range (`minPrice`, `maxPrice`)
+* Sorting by name or price
+
+### Pagination
+
+* Offset-based pagination using `skip` and `take`
+* Pagination metadata returned in:
+
+  * Response body
+  * HTTP headers (`X-Total-Count`, `X-Skip`, `X-Take`)
+
+### HTTP Semantics
+
+* `GET /api/product` – Full product listing
+* `HEAD /api/product` – Headers-only pagination metadata
+* Proper status codes (`200`, `201`, `204`, `400`, `404`)
+
+### Soft Delete
+
+* Products are marked as deleted instead of removed
+* Deleted items are excluded from queries
+
+### Analytics
+
+* `GET /api/product/stats`
+* Returns aggregate insights:
+
+  * Total products
+  * Active vs deleted
+  * Min / max / average price
+
+### Observability & Reliability
+
+* Global exception handling middleware
+* Request correlation ID (`X-Request-Id`) on every request/response
+* Health check endpoint (`/health`)
+
+### Developer Experience
+
+* Swagger / OpenAPI documentation
+* Enum-safe JSON serialization (case-insensitive)
+* CORS configured for local frontend development
+
+---
+
+## 📡 API Endpoints
+
+### Products
+
+```
+GET    /api/product
+HEAD   /api/product
+GET    /api/product/{id}
+POST   /api/product
+PUT    /api/product/{id}
+DELETE /api/product/{id}
+```
+
+### Analytics
+
+```
+GET /api/product/stats
+```
+
+### Health
+
+```
+GET /health
+```
+
+---
+
+## 🔎 Example Requests
+
+### Create a product
+
+```json
+POST /api/product
+{
+  "name": "Laptop",
+  "price": 1200,
+  "category": "Electronics"
+}
+```
+
+### Filter and paginate
+
+```
+GET /api/product?category=Electronics&minPrice=500&skip=0&take=10
+```
+
+### Lightweight pagination check
+
+```
+HEAD /api/product
+```
+
+---
+
+## 🧪 Testing
+
+A `test.rest` file is included for quick testing using the VS Code REST Client extension.
+
+---
+
+## 🛠 Tech Stack
+
+* ASP.NET Core Web API
+* .NET 8+
+* Swagger (Swashbuckle)
+* Minimal middleware-based architecture
+
+---
+
+## 📌 Design Notes
+
+* Intentionally avoids database complexity to focus on API design
+* Follows RESTful conventions and HTTP standards
+* Built incrementally with non-breaking enhancements
+
+---
+
+## 📈 Portfolio Value
+
+This project demonstrates:
+
+* Clean controller design
+* Middleware usage
+* API evolution without breaking changes
+* Real-world HTTP patterns
+* Production-minded thinking
+
+---
+
+## ▶️ Running the Project
+
+```bash
+dotnet restore
+dotnet run
+```
+
+Swagger UI:
+
+```
+http://localhost:5103/swagger
+```
+
+Health check:
+
+```
+http://localhost:5103/health
+```
+
+---
+
+## 📄 License
+
+This project is intended for educational and portfolio use.
